@@ -1,30 +1,28 @@
+;; Institution Verification Contract
+;; Validates financial entities in the system
 
-;; title: institution-verification
-;; version:
-;; summary:
-;; description:
+(define-data-var admin principal tx-sender)
 
-;; traits
-;;
+;; Map to store verified institutions
+(define-map verified-institutions principal bool)
 
-;; token definitions
-;;
+;; Function to verify an institution
+(define-public (verify-institution (institution principal))
+  (begin
+    (asserts! (is-eq tx-sender (var-get admin)) (err u100))
+    (ok (map-set verified-institutions institution true))
+  )
+)
 
-;; constants
-;;
+;; Function to check if an institution is verified
+(define-read-only (is-verified (institution principal))
+  (default-to false (map-get? verified-institutions institution))
+)
 
-;; data vars
-;;
-
-;; data maps
-;;
-
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Function to revoke verification
+(define-public (revoke-verification (institution principal))
+  (begin
+    (asserts! (is-eq tx-sender (var-get admin)) (err u100))
+    (ok (map-set verified-institutions institution false))
+  )
+)
