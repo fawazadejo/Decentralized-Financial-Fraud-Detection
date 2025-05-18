@@ -1,30 +1,38 @@
+;; Transaction Monitoring Contract
+;; Analyzes payment patterns
 
-;; title: transaction-monitoring
-;; version:
-;; summary:
-;; description:
+(define-data-var admin principal tx-sender)
 
-;; traits
-;;
+;; Structure to store transaction data
+(define-map transactions
+  { tx-id: (string-ascii 64) }
+  {
+    sender: principal,
+    receiver: principal,
+    amount: uint,
+    timestamp: uint
+  }
+)
 
-;; token definitions
-;;
+;; Function to record a transaction
+(define-public (record-transaction
+    (tx-id (string-ascii 64))
+    (receiver principal)
+    (amount uint))
+  (begin
+    (ok (map-set transactions
+      { tx-id: tx-id }
+      {
+        sender: tx-sender,
+        receiver: receiver,
+        amount: amount,
+        timestamp: block-height
+      }
+    ))
+  )
+)
 
-;; constants
-;;
-
-;; data vars
-;;
-
-;; data maps
-;;
-
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Function to get transaction details
+(define-read-only (get-transaction (tx-id (string-ascii 64)))
+  (map-get? transactions { tx-id: tx-id })
+)
