@@ -5,3 +5,5 @@ O
 contracts/alert-management.clar,8/6/8614a233af464fde2547e6d7f9894c68a07e2c78
 W
 'contracts/institution-verification.clar,d/d/dd6f29d581e4fc80d30e9eb12d64363ad190bf89
+U
+%contracts/investigation-tracking.clar,4/d/4d2eda8ee952874415e8ac601521b88af8aa1c1a
